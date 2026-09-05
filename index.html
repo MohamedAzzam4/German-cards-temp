@@ -762,7 +762,151 @@
       }
     }
 
-  </style>
+  
+/* GREEN-DOMINANT PREVIEW OVERRIDE */
+:root{
+  --bg:#07120c;
+  --bg-2:#0a1710;
+  --panel:#0d1d14;
+  --panel-2:#10261a;
+  --card:#112419;
+  --text:#f1f4ef;
+  --muted:#a7b7ab;
+  --border:#274c37;
+
+  --royal:#0f7a43;
+  --royal-light:#22a05f;
+  --royal-deep:#075631;
+  --royal-soft:#123821;
+
+  --brown:#755038;
+  --brown-light:#946849;
+  --brown-deep:#3a281d;
+  --brown-soft:#2d2119;
+
+  --sand:#d8c5a9;
+  --cream:#eee5d8;
+  --gold:#c9a35d;
+  --rust:#a95f48;
+  --rust-soft:#3a241d;
+
+  --terra:var(--royal);
+  --terra-hover:var(--royal-light);
+  --clay:var(--brown);
+  --sage:var(--royal);
+  --sage-soft:var(--royal-soft);
+  --ochre:var(--gold);
+  --clay-accent:var(--brown-light);
+}
+
+body{
+  background:
+    radial-gradient(circle at 10% 0%, rgba(15,122,67,.25), transparent 30rem),
+    radial-gradient(circle at 90% 12%, rgba(34,160,95,.12), transparent 24rem),
+    radial-gradient(circle at 55% 100%, rgba(117,80,56,.07), transparent 28rem),
+    var(--bg) !important;
+}
+
+.panel{
+  background:rgba(13,29,20,.97) !important;
+  border-color:#28563b !important;
+}
+
+.side{
+  background:linear-gradient(180deg,#0d2116,#0a1710) !important;
+}
+
+.main{
+  background:linear-gradient(180deg,#102419,#0d1b13) !important;
+}
+
+.srs-box{
+  background:linear-gradient(145deg,rgba(15,122,67,.24),rgba(8,58,34,.34)),#0e2117 !important;
+  border-color:#2b6845 !important;
+}
+
+.srs-stat{
+  background:#0b1810 !important;
+  border-color:#244b34 !important;
+}
+
+.due-btn{
+  background:linear-gradient(145deg,#0f7a43,#075631) !important;
+  border-color:#26915a !important;
+}
+
+.favorite-tools .fav-review,
+#reset{
+  background:#2d2119 !important;
+  border-color:#765039 !important;
+  color:#e5c9ad !important;
+}
+
+.deck{
+  background:#10261a !important;
+  border-color:#254b35 !important;
+}
+
+.deck.active{
+  background:linear-gradient(90deg,rgba(15,122,67,.35),rgba(15,122,67,.14)) !important;
+  border-color:#258b56 !important;
+  box-shadow:inset 3px 0 0 #22a05f !important;
+}
+
+.view-switch,
+select{
+  background:#0d2116 !important;
+  border-color:#2a5a3f !important;
+}
+
+.view-switch button.active,
+.primary{
+  background:linear-gradient(145deg,#168a4d,#0b6538) !important;
+  border-color:#26965c !important;
+  color:#f5fff8 !important;
+}
+
+.card{
+  background:linear-gradient(145deg,rgba(34,160,95,.08),transparent 48%),#10251a !important;
+  border-color:#2b5b40 !important;
+}
+
+.browse-wrap{
+  background:#0b1a12 !important;
+  border-color:#285139 !important;
+}
+
+.words-table th{
+  background:#12341f !important;
+  border-bottom-color:#2f6545 !important;
+  color:#d8e8dd !important;
+}
+
+.words-table tbody tr:hover{
+  background:rgba(34,160,95,.09) !important;
+}
+
+.words-table td{
+  border-bottom-color:rgba(42,90,63,.45) !important;
+}
+
+.bar{
+  background:#0b1b12 !important;
+  border-color:#255039 !important;
+}
+
+.fill{
+  background:linear-gradient(90deg,#0f7a43,#22a05f) !important;
+}
+
+.logo{
+  background:linear-gradient(145deg,#22a05f 0%,#0f7a43 72%,#755038 145%) !important;
+}
+
+.cat{color:#9fc9ae !important;}
+.srs-box-title{color:#b9d9c5 !important;}
+
+</style>
 </head>
 
 <body>
