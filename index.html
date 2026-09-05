@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#17130f">
+  <meta name="theme-color" content="#101611">
   <title>German Flashcards</title>
   <style>
     :root{
@@ -468,6 +468,25 @@
       font-weight:700;
     }
 
+
+    .view-switch{display:flex;gap:7px;padding:4px;border:1px solid var(--border);border-radius:12px;background:#1b271f}
+    .view-switch button{padding:7px 12px;border:none;background:transparent;color:var(--muted)}
+    .view-switch button:hover{transform:none;background:#27372c}
+    .view-switch button.active{background:linear-gradient(145deg,var(--sage-soft),#304230);color:#dce9d1;box-shadow:inset 0 0 0 1px #586b53;font-weight:800}
+    .browse-wrap{overflow:auto;border:1px solid var(--border);border-radius:15px;background:#19231c}
+    .words-table{width:100%;border-collapse:collapse;min-width:900px}
+    .words-table th{position:sticky;top:0;z-index:1;text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#d7c39e;background:#243129;border-bottom:1px solid #536052;padding:12px 13px;white-space:nowrap}
+    .words-table td{padding:12px 13px;border-bottom:1px solid rgba(83,96,82,.48);vertical-align:top;line-height:1.45}
+    .words-table tr:last-child td{border-bottom:none}
+    .words-table tbody tr:hover{background:rgba(147,170,123,.055)}
+    .word-cell{min-width:160px;font-weight:800;color:#edf1e9}.meaning-cell{min-width:170px;color:#dfd9cf}.example-cell{min-width:260px;color:#d5dfd0}.translation-cell{min-width:240px;color:#bdbbb2}.level-cell{width:65px;color:#e3c891;font-size:12px;white-space:nowrap}
+    .table-fav{width:42px;border:none;background:transparent;padding:2px;font-size:20px;color:#777e75}.table-fav:hover{background:transparent;border:none;transform:scale(1.08);color:var(--ochre)}.table-fav.active{color:var(--ochre)}
+    .speakable{display:inline-flex;align-items:flex-start;gap:7px;padding:2px 4px;margin:-2px -4px;border:none;background:transparent;color:inherit;text-align:left;cursor:pointer;border-radius:6px}.speakable:hover{border:none;background:rgba(147,170,123,.10);transform:none;color:#f4f5ef}.speaker-icon{flex:0 0 auto;color:var(--sage);font-size:13px;margin-top:2px;opacity:.92}
+    .click-speak{cursor:pointer;border-radius:7px;padding:4px 7px;margin:-4px -7px}.click-speak:hover{background:rgba(147,170,123,.09)}.click-speak::after{content:"  🔊";font-size:.42em;vertical-align:middle;color:var(--sage);opacity:.9}
+    .tts-note{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#94a58d;margin-top:9px}
+    .tts-toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(12px);opacity:0;pointer-events:none;z-index:99;max-width:min(92vw,560px);padding:11px 14px;border:1px solid #695442;border-radius:11px;background:#2d2721;color:#ead9c7;box-shadow:0 12px 34px rgba(0,0,0,.36);transition:.18s ease;font-size:13px;text-align:center}.tts-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    .status-new{color:#9da99a}.status-known{color:#b9d2aa}.status-review{color:#e6a88f}
+
     @media(max-width:760px){
       .app{padding:10px}
       header{align-items:flex-start}
@@ -490,7 +509,7 @@
       <div class="logo">DE</div>
       <div>
         <h1>German Flashcards</h1>
-        <div class="sub">Small decks · German ↔ English · dark terra theme</div>
+        <div class="sub">Browse first · Flashcards second · German-only pronunciation</div>
         <div class="save-note"><span class="save-dot"></span>Progress is saved on this device</div>
       </div>
     </div>
@@ -513,18 +532,25 @@
         </div>
 
         <div class="controls">
-          <label>
-            Front:
-            <select id="front">
-              <option value="de">German</option>
-              <option value="en">English</option>
-            </select>
-          </label>
-          <button id="shuffle" class="primary">Shuffle</button>
+          <div class="view-switch" aria-label="View mode">
+            <button id="tableViewBtn" class="active">Table</button>
+            <button id="flashViewBtn">Flashcards</button>
+          </div>
+          <div id="flashControls" class="flash-controls">
+            <label>
+              Front:
+              <select id="front">
+                <option value="de">German</option>
+                <option value="en">English</option>
+              </select>
+            </label>
+            <button id="shuffle" class="primary">Shuffle</button>
+          </div>
         </div>
       </div>
 
       <div id="study" class="empty">Select a deck from the left.</div>
+      <div id="ttsToast" class="tts-toast" role="status" aria-live="polite"></div>
     </main>
   </div>
 </div>
@@ -543,12 +569,17 @@ let flip = false;
 let phase = 'initial';   // initial | review | complete
 let reviewRound = 0;
 let favoritesMode = false;
+let viewMode = 'table';
 
 const list = document.getElementById('list');
 const study = document.getElementById('study');
 const front = document.getElementById('front');
 const title = document.getElementById('deckTitle');
 const info = document.getElementById('deckInfo');
+const tableViewBtn = document.getElementById('tableViewBtn');
+const flashViewBtn = document.getElementById('flashViewBtn');
+const flashControls = document.getElementById('flashControls');
+const ttsToast = document.getElementById('ttsToast');
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({
   '&':'&amp;',
@@ -577,6 +608,64 @@ function writeJSON(key, value){
 
 function uniqueNumbers(values){
   return [...new Set((values || []).filter(Number.isInteger))];
+}
+
+
+let germanVoice = null;
+let ttsToastTimer = null;
+
+function refreshGermanVoice(){
+  if(!('speechSynthesis' in window)){
+    germanVoice = null;
+    return null;
+  }
+
+  const voices = window.speechSynthesis.getVoices() || [];
+  const germanVoices = voices.filter(v => /^de(?:-|_)/i.test(v.lang || ''));
+  germanVoice = germanVoices.find(v => /^de-DE$/i.test(v.lang || '')) || germanVoices[0] || null;
+  return germanVoice;
+}
+
+if('speechSynthesis' in window){
+  refreshGermanVoice();
+  if(window.speechSynthesis.addEventListener){
+    window.speechSynthesis.addEventListener('voiceschanged', refreshGermanVoice);
+  }
+  window.speechSynthesis.onvoiceschanged = refreshGermanVoice;
+}
+
+function showTtsMessage(message){
+  if(!ttsToast) return;
+  ttsToast.textContent = message;
+  ttsToast.classList.add('show');
+  clearTimeout(ttsToastTimer);
+  ttsToastTimer = setTimeout(() => ttsToast.classList.remove('show'), 2800);
+}
+
+function speakGerman(text){
+  const clean = String(text || '').trim();
+  if(!clean) return;
+
+  if(!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined'){
+    showTtsMessage('Speech synthesis is not supported by this browser.');
+    return;
+  }
+
+  const voice = refreshGermanVoice();
+
+  // Strict mode: do not let the browser fall back to English or auto-detect.
+  if(!voice){
+    showTtsMessage('No German voice is available. Playback was blocked instead of using another language.');
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(clean);
+  utterance.lang = 'de-DE';
+  utterance.voice = voice;
+  utterance.rate = 0.92;
+  utterance.pitch = 1;
+  window.speechSynthesis.speak(utterance);
 }
 
 
@@ -769,6 +858,67 @@ function applySession(session){
   flip = false;
 }
 
+
+function updateViewControls(){
+  tableViewBtn.classList.toggle('active', viewMode === 'table' && !favoritesMode);
+  flashViewBtn.classList.toggle('active', viewMode === 'flashcards' || favoritesMode);
+  flashControls.style.display = (viewMode === 'flashcards' || favoritesMode) ? 'flex' : 'none';
+  tableViewBtn.disabled = favoritesMode;
+}
+
+function setView(mode){
+  if(favoritesMode && mode === 'table') return;
+  viewMode = mode;
+  updateViewControls();
+  render();
+}
+
+function progressStatus(deckId, cardIndex){
+  const p = getProgress(deckId);
+  if(p.known.includes(cardIndex)) return ['Known','status-known'];
+  if(p.again.includes(cardIndex)) return ['Review','status-review'];
+  return ['New','status-new'];
+}
+
+function renderTable(){
+  if(!deck) return;
+  const p = getProgress(deck.id);
+  const favCount = deck.cards.filter((_,i)=>isFavorite(deck.id,i)).length;
+  info.textContent = `${deck.count} words · ${p.known.length} known · ${p.again.length} to review · ${favCount} favorite${favCount===1?'':'s'}`;
+
+  const rows = deck.cards.map((c,cardIndex)=>{
+    const [status,statusClass] = progressStatus(deck.id,cardIndex);
+    const fav = isFavorite(deck.id,cardIndex);
+    return `
+      <tr>
+        <td><button class="table-fav ${fav?'active':''}" data-fav-index="${cardIndex}" title="${fav?'Remove from favorites':'Add to favorites'}">${fav?'★':'☆'}</button></td>
+        <td class="word-cell"><button class="speakable" data-speak="${esc(c.de)}" title="Play German word"><span>${esc(c.de)}</span><span class="speaker-icon">🔊</span></button></td>
+        <td class="meaning-cell">${esc(c.en)}</td>
+        <td class="example-cell">${c.deExample ? `<button class="speakable" data-speak="${esc(c.deExample)}" title="Play German example"><span>${esc(c.deExample)}</span><span class="speaker-icon">🔊</span></button>` : '—'}</td>
+        <td class="translation-cell">${c.enExample ? esc(c.enExample) : '—'}</td>
+        <td class="level-cell">${esc(c.level || '')}</td>
+        <td class="${statusClass}">${status}</td>
+      </tr>`;
+  }).join('');
+
+  study.className='';
+  study.innerHTML = `
+    <div class="browse-wrap">
+      <table class="words-table">
+        <thead><tr><th>★</th><th>German</th><th>Meaning</th><th>German example</th><th>Translation</th><th>Level</th><th>Status</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="tts-note">🔊 Audio is allowed only when the browser exposes a voice explicitly marked as German (de / de-DE).</div>`;
+
+  study.querySelectorAll('[data-speak]').forEach(btn=>{
+    btn.onclick = e => { e.stopPropagation(); speakGerman(btn.dataset.speak); };
+  });
+  study.querySelectorAll('[data-fav-index]').forEach(btn=>{
+    btn.onclick = () => { toggleFavorite(deck.id,Number(btn.dataset.favIndex)); renderList(); renderTable(); };
+  });
+}
+
 function renderList(){
   list.innerHTML = '';
 
@@ -798,6 +948,7 @@ function renderList(){
 
 function selectDeck(id){
   favoritesMode = false;
+  viewMode = 'table';
   deck = DECKS.find(d => d.id === id);
   if(!deck) return;
 
@@ -808,6 +959,7 @@ function selectDeck(id){
   saveSession();
 
   renderList();
+  updateViewControls();
   render();
 }
 
@@ -943,6 +1095,13 @@ function renderComplete(){
 function render(){
   if(!deck) return;
 
+  updateViewControls();
+
+  if(viewMode === 'table' && !favoritesMode){
+    renderTable();
+    return;
+  }
+
   if(phase === 'complete' || !order.length){
     renderComplete();
     return;
@@ -991,13 +1150,13 @@ function render(){
       <div class="label">${label}</div>
       <div class="level">${esc(c.level)}</div>
 
-      <div class="${flip ? 'meaning' : 'word'}">${esc(main)}</div>
+      <div id="mainCardText" class="${flip ? 'meaning' : 'word'}">${esc(main)}</div>
 
-      ${ex ? `<div class="example">${ex}</div>` : ''}
+      ${ex ? `<div class="example" id="exampleCardText">${ex}</div>` : ''}
       ${flip && c.note ? `<div class="note">${esc(c.note)}</div>` : ''}
 
       <div class="hint">
-        ${flip ? 'Tap to hide answer' : 'Tap to reveal answer'}
+        ${flip ? 'Tap to hide answer' : 'Tap to reveal answer'} · click German text to hear it
       </div>
     </div>
 
@@ -1014,6 +1173,28 @@ function render(){
       <div class="ptext">${idx+1}/${order.length} · ${pct}% known</div>
     </div>
   `;
+
+
+  const germanMainVisible = (!flip && f === 'de') || (flip && f === 'en');
+  const mainCardText = document.getElementById('mainCardText');
+  if(germanMainVisible && mainCardText){
+    mainCardText.classList.add('click-speak');
+    mainCardText.title = 'Click to hear German';
+    mainCardText.onclick = e => {
+      e.stopPropagation();
+      speakGerman(c.de);
+    };
+  }
+
+  const exampleCardText = document.getElementById('exampleCardText');
+  if(flip && c.deExample && exampleCardText){
+    exampleCardText.classList.add('click-speak');
+    exampleCardText.title = 'Click to hear the German example';
+    exampleCardText.onclick = e => {
+      e.stopPropagation();
+      speakGerman(c.deExample);
+    };
+  }
 
   document.getElementById('favoriteBtn').onclick = (e) => {
     e.stopPropagation();
@@ -1050,6 +1231,9 @@ function render(){
   document.getElementById('again').onclick = () => grade('again');
   document.getElementById('known').onclick = () => grade('known');
 }
+
+tableViewBtn.onclick = () => setView('table');
+flashViewBtn.onclick = () => setView('flashcards');
 
 document.getElementById('shuffle').onclick = () => {
   if(!deck || phase === 'complete' || order.length < 2) return;
@@ -1104,10 +1288,13 @@ document.getElementById('reviewFavorites').onclick = () => {
     title.textContent = 'Favorites';
     info.textContent = '0 favorite cards';
     favoritesMode = true;
+    viewMode = 'flashcards';
+    updateViewControls();
     return;
   }
 
   favoritesMode = true;
+  viewMode = 'flashcards';
 
   // Keep a real deck object only as a UI anchor; cards are read from favoriteCards().
   deck = DECKS.find(d => d.id === favs[0].deckId) || DECKS[0];
@@ -1128,6 +1315,7 @@ function boot(){
   front.value = settings.front === 'en' ? 'en' : 'de';
 
   renderList();
+  updateViewControls();
 
   const initialDeck =
     DECKS.find(d => d.id === settings.selectedDeck) ||
