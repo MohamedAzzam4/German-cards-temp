@@ -3,37 +3,49 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#101611">
+  <meta name="theme-color" content="#120f0c">
   <title>German Flashcards</title>
   <style>
     :root{
-      --bg:#101611;
-      --bg-2:#182019;
-      --panel:#1c281f;
-      --panel-2:#26352a;
-      --card:#222f26;
-      --text:#f2f0e8;
-      --muted:#b7b6aa;
-      --border:#445447;
+      --bg:#120f0c;
+      --bg-2:#18130f;
+      --panel:#201914;
+      --panel-2:#2a211a;
+      --card:#261e18;
+      --text:#f4efe8;
+      --muted:#b9aa9d;
+      --border:#4b3a2d;
 
-      /* Terra / earth palette */
-      --terra:#8fa07a;
-      --terra-hover:#a8ba92;
-      --clay:#6f825e;
-      --sand:#d9c2a3;
-      --sage:#93aa7b;
-      --sage-soft:#27362a;
-      --rust:#b86f52;
-      --rust-soft:#3a2822;
+      /* Brown + Royal Green */
+      --royal:#0d6b3b;
+      --royal-light:#198553;
+      --royal-deep:#084a2a;
+      --royal-soft:#153326;
 
-      --ochre:#c89b5a;
-      --ochre-soft:#3a3020;
-      --clay-accent:#c77d61;
-      --blue-muted:#7f9ca6;
-      --blue-soft:#223138;
-      --cream:#e5d7c5;
+      --brown:#6f4b32;
+      --brown-light:#906343;
+      --brown-deep:#37261b;
+      --brown-soft:#2d2119;
 
-      --shadow:0 16px 42px rgba(0,0,0,.28);
+      --sand:#dcc5a6;
+      --cream:#efe5d8;
+      --gold:#c9a35d;
+      --rust:#a95f48;
+      --rust-soft:#3a241d;
+
+      /* aliases kept for existing styles */
+      --terra:var(--royal);
+      --terra-hover:var(--royal-light);
+      --clay:var(--brown);
+      --sage:var(--royal);
+      --sage-soft:var(--royal-soft);
+      --ochre:var(--gold);
+      --ochre-soft:#352d20;
+      --clay-accent:var(--brown-light);
+      --blue-muted:#92a99b;
+      --blue-soft:#1c3026;
+
+      --shadow:0 16px 42px rgba(0,0,0,.34);
     }
 
     *{box-sizing:border-box}
@@ -45,8 +57,9 @@
       min-height:100vh;
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       background:
-        radial-gradient(circle at 12% 0%, rgba(143,160,122,.09), transparent 28rem),
-        radial-gradient(circle at 95% 15%, rgba(201,120,85,.05), transparent 24rem),
+        radial-gradient(circle at 10% 0%, rgba(13,107,59,.15), transparent 29rem),
+        radial-gradient(circle at 92% 10%, rgba(144,99,67,.10), transparent 25rem),
+        radial-gradient(circle at 55% 100%, rgba(111,75,50,.08), transparent 28rem),
         var(--bg);
       color:var(--text);
     }
@@ -77,10 +90,10 @@
       border-radius:13px;
       display:grid;
       place-items:center;
-      background:linear-gradient(145deg,var(--sage) 0%, var(--clay) 62%, var(--clay-accent) 100%);
+      background:linear-gradient(145deg,var(--royal-light) 0%, var(--royal) 62%, var(--brown-light) 145%);
       color:#1d120e;
       font-weight:900;
-      box-shadow:0 8px 20px rgba(143,160,122,.24);
+      box-shadow:0 8px 20px rgba(13,107,59,.28);
     }
 
     h1{
@@ -102,7 +115,7 @@
     }
 
     .panel{
-      background:rgba(27,38,29,.94);
+      background:rgba(32,25,20,.96);
       border:1px solid var(--border);
       border-radius:18px;
       box-shadow:var(--shadow);
@@ -143,26 +156,26 @@
     }
 
     button:hover{
-      border-color:#667a65;
-      background:#2b392d;
+      border-color:#76533b;
+      background:#30251d;
       transform:translateY(-1px);
     }
 
     #reset{
       border-color:#5a4940;
       color:#d9c2a3;
-      background:#2e2923;
+      background:#2d2119;
     }
 
     #reset:hover{
       border-color:var(--clay-accent);
-      background:#382b25;
+      background:#3a281d;
       color:#efd5c7;
     }
 
     select{
-      border-color:#4c5f50;
-      background:#223028;
+      border-color:#5a4535;
+      background:#251e18;
     }
 
     .deck{
@@ -174,7 +187,7 @@
       text-align:left;
       margin:0 0 6px;
       padding:10px 11px;
-      background:#202c22;
+      background:#2a211a;
     }
 
     .deck.active{
@@ -349,7 +362,7 @@
     }
 
     .primary{
-      background:linear-gradient(145deg,var(--sage) 0%, var(--clay) 62%, var(--clay-accent) 100%);
+      background:linear-gradient(145deg,var(--royal-light) 0%, var(--royal) 62%, var(--brown-light) 145%);
       border-color:var(--terra);
       color:#1c120e;
       font-weight:800;
@@ -469,13 +482,13 @@
     }
 
 
-    .view-switch{display:flex;gap:7px;padding:4px;border:1px solid var(--border);border-radius:12px;background:#1b271f}
+    .view-switch{display:flex;gap:7px;padding:4px;border:1px solid var(--border);border-radius:12px;background:#251e18}
     .view-switch button{padding:7px 12px;border:none;background:transparent;color:var(--muted)}
-    .view-switch button:hover{transform:none;background:#27372c}
+    .view-switch button:hover{transform:none;background:#30251e}
     .view-switch button.active{background:linear-gradient(145deg,var(--sage-soft),#304230);color:#dce9d1;box-shadow:inset 0 0 0 1px #586b53;font-weight:800}
-    .browse-wrap{overflow:auto;border:1px solid var(--border);border-radius:15px;background:#19231c}
+    .browse-wrap{overflow:auto;border:1px solid var(--border);border-radius:15px;background:#1d1713}
     .words-table{width:100%;border-collapse:collapse;min-width:900px}
-    .words-table th{position:sticky;top:0;z-index:1;text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#d7c39e;background:#243129;border-bottom:1px solid #536052;padding:12px 13px;white-space:nowrap}
+    .words-table th{position:sticky;top:0;z-index:1;text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#d7c39e;background:#2a211a;border-bottom:1px solid #536052;padding:12px 13px;white-space:nowrap}
     .words-table td{padding:12px 13px;border-bottom:1px solid rgba(83,96,82,.48);vertical-align:top;line-height:1.45}
     .words-table tr:last-child td{border-bottom:none}
     .words-table tbody tr:hover{background:rgba(147,170,123,.055)}
@@ -499,6 +512,256 @@
       .actions{grid-template-columns:1fr 1fr}
       .known{grid-column:1/-1}
     }
+
+    .srs-box{
+      margin-bottom:12px;
+      padding:12px;
+      border:1px solid #4f3d30;
+      border-radius:14px;
+      background:
+        linear-gradient(145deg,rgba(13,107,59,.08),transparent 55%),
+        #251d17;
+    }
+
+    .srs-box-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      margin-bottom:9px;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--sand);
+      font-weight:850;
+    }
+
+    .srs-stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:6px;
+      margin-bottom:9px;
+    }
+
+    .srs-stat{
+      padding:8px 6px;
+      border-radius:9px;
+      background:#1c1713;
+      border:1px solid #3d3026;
+      text-align:center;
+    }
+
+    .srs-stat strong{
+      display:block;
+      font-size:18px;
+      color:#e7eee8;
+    }
+
+    .srs-stat span{
+      display:block;
+      margin-top:2px;
+      color:var(--muted);
+      font-size:10px;
+    }
+
+    .due-btn{
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      background:linear-gradient(145deg,var(--royal-deep),#114f32);
+      border-color:#1d7549;
+      color:#eaf5ed;
+      font-weight:850;
+    }
+
+    .due-btn:hover{
+      background:linear-gradient(145deg,var(--royal),var(--royal-deep));
+      border-color:var(--royal-light);
+    }
+
+    .due-badge{
+      min-width:27px;
+      height:25px;
+      display:grid;
+      place-items:center;
+      padding:0 7px;
+      border-radius:999px;
+      background:#efe5d8;
+      color:#17492f;
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .srs-note{
+      margin-top:8px;
+      font-size:10.5px;
+      line-height:1.45;
+      color:#9e9085;
+    }
+
+    .srs-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      padding:4px 7px;
+      border-radius:999px;
+      border:1px solid #4d3c2f;
+      background:#241c16;
+      font-size:11px;
+      white-space:nowrap;
+    }
+
+    .srs-pill.due{
+      border-color:#8a4f3e;
+      color:#e6aa92;
+      background:#342019;
+    }
+
+    .srs-pill.future{
+      border-color:#316546;
+      color:#b8d6c1;
+      background:#162b20;
+    }
+
+    .srs-pill.new{
+      color:#b8aa9e;
+    }
+
+    .due-empty{
+      min-height:310px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      text-align:center;
+      padding:28px;
+      border:1px solid #4a392d;
+      border-radius:18px;
+      background:#211914;
+    }
+
+    .due-empty .big{
+      font-size:38px;
+    }
+
+    .due-empty strong{
+      font-size:22px;
+    }
+
+    .due-empty p{
+      max-width:560px;
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+    }
+
+    .due-explain{
+      margin:0 0 13px;
+      padding:10px 12px;
+      border:1px solid #3d573f;
+      border-radius:11px;
+      background:rgba(13,107,59,.08);
+      color:#c7d6ca;
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    /* Proper mobile table: each desktop row becomes a compact word card. */
+    @media(max-width:760px){
+      .browse-wrap{
+        overflow:visible;
+        border:none;
+        background:transparent;
+      }
+
+      .words-table{
+        display:block;
+        min-width:0;
+        width:100%;
+      }
+
+      .words-table thead{
+        display:none;
+      }
+
+      .words-table tbody{
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+      }
+
+      .words-table tr{
+        display:block;
+        width:100%;
+        padding:10px 11px;
+        border:1px solid #4c392c;
+        border-radius:14px;
+        background:
+          linear-gradient(145deg,rgba(13,107,59,.045),transparent 50%),
+          #241c16;
+        box-shadow:0 7px 20px rgba(0,0,0,.18);
+      }
+
+      .words-table td{
+        display:grid;
+        grid-template-columns:94px minmax(0,1fr);
+        gap:9px;
+        width:100%;
+        min-width:0 !important;
+        padding:8px 2px;
+        border-bottom:1px solid rgba(111,75,50,.28);
+        align-items:start;
+      }
+
+      .words-table td:last-child{
+        border-bottom:none;
+      }
+
+      .words-table td::before{
+        content:attr(data-label);
+        color:#a99a8e;
+        font-size:10px;
+        letter-spacing:.07em;
+        text-transform:uppercase;
+        font-weight:800;
+        padding-top:2px;
+      }
+
+      .words-table td:first-child{
+        display:flex;
+        justify-content:flex-end;
+        padding:0 0 4px;
+        border-bottom:none;
+      }
+
+      .words-table td:first-child::before{
+        display:none;
+      }
+
+      .word-cell{
+        font-size:19px;
+      }
+
+      .speakable{
+        max-width:100%;
+        white-space:normal;
+        overflow-wrap:anywhere;
+      }
+
+      .example-cell,
+      .translation-cell,
+      .meaning-cell{
+        min-width:0;
+      }
+
+      .srs-stats{
+        grid-template-columns:repeat(3,1fr);
+      }
+    }
+
   </style>
 </head>
 
@@ -509,7 +772,7 @@
       <div class="logo">DE</div>
       <div>
         <h1>German Flashcards</h1>
-        <div class="sub">Browse first · Flashcards second · German-only pronunciation</div>
+        <div class="sub">Brown + royal green · Mobile-friendly · Spaced repetition</div>
         <div class="save-note"><span class="save-dot"></span>Progress is saved on this device</div>
       </div>
     </div>
@@ -518,6 +781,25 @@
 
   <div class="layout">
     <aside class="panel side">
+      <div class="srs-box">
+        <div class="srs-box-title">
+          <span>Spaced repetition</span>
+          <span>Local</span>
+        </div>
+        <div class="srs-stats">
+          <div class="srs-stat"><strong id="dueStat">0</strong><span>Due today</span></div>
+          <div class="srs-stat"><strong id="learningStat">0</strong><span>Learning</span></div>
+          <div class="srs-stat"><strong id="stableStat">0</strong><span>Established</span></div>
+        </div>
+        <button id="reviewDue" class="due-btn">
+          <span>📅 Review due today</span>
+          <span id="dueBadge" class="due-badge">0</span>
+        </button>
+        <div class="srs-note">
+          Max one SRS step per successful day. “Again” never resets a word.
+        </div>
+      </div>
+
       <div class="favorite-tools">
         <button id="reviewFavorites" class="fav-review">★ Review favorites</button>
       </div>
@@ -560,15 +842,21 @@
 
 const STORAGE_PREFIX = 'gfc:';
 const SETTINGS_KEY = STORAGE_PREFIX + 'settings';
-const SESSION_VERSION = 2;
+const SESSION_VERSION = 4;
+const SRS_KEY = STORAGE_PREFIX + 'srs:v1';
+
+// Successful daily reviews move through these day intervals.
+// Stage 1 -> 1 day, Stage 2 -> 3 days, etc.
+const SRS_INTERVALS = [1,3,7,14,30,60,120];
 
 let deck = null;
 let order = [];
 let idx = 0;
 let flip = false;
-let phase = 'initial';   // initial | review | complete
+let phase = 'initial';      // initial | review | complete
 let reviewRound = 0;
-let favoritesMode = false;
+let specialMode = null;     // null | favorites | due
+let specialRefs = [];
 let viewMode = 'table';
 
 const list = document.getElementById('list');
@@ -580,6 +868,11 @@ const tableViewBtn = document.getElementById('tableViewBtn');
 const flashViewBtn = document.getElementById('flashViewBtn');
 const flashControls = document.getElementById('flashControls');
 const ttsToast = document.getElementById('ttsToast');
+
+const dueStat = document.getElementById('dueStat');
+const learningStat = document.getElementById('learningStat');
+const stableStat = document.getElementById('stableStat');
+const dueBadge = document.getElementById('dueBadge');
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({
   '&':'&amp;',
@@ -610,6 +903,35 @@ function uniqueNumbers(values){
   return [...new Set((values || []).filter(Number.isInteger))];
 }
 
+/* ---------------------------------------------------------
+   Dates — local calendar days, not UTC days
+   --------------------------------------------------------- */
+
+function localDateISO(date = new Date()){
+  const y = date.getFullYear();
+  const m = String(date.getMonth()+1).padStart(2,'0');
+  const d = String(date.getDate()).padStart(2,'0');
+  return `${y}-${m}-${d}`;
+}
+
+function addDays(dateString, days){
+  const [y,m,d] = dateString.split('-').map(Number);
+  const date = new Date(y,m-1,d);
+  date.setDate(date.getDate()+days);
+  return localDateISO(date);
+}
+
+function dayDifference(fromDate,toDate){
+  const [fy,fm,fd] = fromDate.split('-').map(Number);
+  const [ty,tm,td] = toDate.split('-').map(Number);
+  const a = new Date(fy,fm-1,fd);
+  const b = new Date(ty,tm-1,td);
+  return Math.round((b-a)/86400000);
+}
+
+/* ---------------------------------------------------------
+   Strict German TTS
+   --------------------------------------------------------- */
 
 let germanVoice = null;
 let ttsToastTimer = null;
@@ -622,14 +944,19 @@ function refreshGermanVoice(){
 
   const voices = window.speechSynthesis.getVoices() || [];
   const germanVoices = voices.filter(v => /^de(?:-|_)/i.test(v.lang || ''));
-  germanVoice = germanVoices.find(v => /^de-DE$/i.test(v.lang || '')) || germanVoices[0] || null;
+
+  germanVoice =
+    germanVoices.find(v => /^de-DE$/i.test(v.lang || '')) ||
+    germanVoices[0] ||
+    null;
+
   return germanVoice;
 }
 
 if('speechSynthesis' in window){
   refreshGermanVoice();
   if(window.speechSynthesis.addEventListener){
-    window.speechSynthesis.addEventListener('voiceschanged', refreshGermanVoice);
+    window.speechSynthesis.addEventListener('voiceschanged',refreshGermanVoice);
   }
   window.speechSynthesis.onvoiceschanged = refreshGermanVoice;
 }
@@ -639,7 +966,7 @@ function showTtsMessage(message){
   ttsToast.textContent = message;
   ttsToast.classList.add('show');
   clearTimeout(ttsToastTimer);
-  ttsToastTimer = setTimeout(() => ttsToast.classList.remove('show'), 2800);
+  ttsToastTimer = setTimeout(()=>ttsToast.classList.remove('show'),2800);
 }
 
 function speakGerman(text){
@@ -653,88 +980,259 @@ function speakGerman(text){
 
   const voice = refreshGermanVoice();
 
-  // Strict mode: do not let the browser fall back to English or auto-detect.
+  // Never fall back to an English/auto-detected voice.
   if(!voice){
     showTtsMessage('No German voice is available. Playback was blocked instead of using another language.');
     return;
   }
 
   window.speechSynthesis.cancel();
+
   const utterance = new SpeechSynthesisUtterance(clean);
   utterance.lang = 'de-DE';
   utterance.voice = voice;
   utterance.rate = 0.92;
   utterance.pitch = 1;
+
   window.speechSynthesis.speak(utterance);
 }
 
+/* ---------------------------------------------------------
+   Card refs
+   --------------------------------------------------------- */
+
+function makeRef(deckId,cardIndex){
+  const d = DECKS.find(x=>x.id===deckId);
+  const c = d?.cards?.[cardIndex];
+  return d && c ? {deckId,cardIndex,deck:d,card:c} : null;
+}
+
+function allCardRefs(){
+  const refs = [];
+  DECKS.forEach(d=>{
+    d.cards.forEach((c,i)=>{
+      refs.push({deckId:d.id,cardIndex:i,deck:d,card:c});
+    });
+  });
+  return refs;
+}
+
+function refId(ref){
+  return `${ref.deckId}:${ref.cardIndex}`;
+}
+
+/* ---------------------------------------------------------
+   Favorites
+   --------------------------------------------------------- */
 
 function getFavorites(){
-  const raw = readJSON(favoritesKey, {});
+  const raw = readJSON(favoritesKey,{});
   return raw && typeof raw === 'object' ? raw : {};
 }
 
 function saveFavorites(favs){
-  writeJSON(favoritesKey, favs);
+  writeJSON(favoritesKey,favs);
 }
 
-function favoriteId(deckId, cardIndex){
+function favoriteId(deckId,cardIndex){
   return `${deckId}:${cardIndex}`;
 }
 
-function isFavorite(deckId, cardIndex){
-  const favs = getFavorites();
-  return !!favs[favoriteId(deckId, cardIndex)];
+function isFavorite(deckId,cardIndex){
+  return !!getFavorites()[favoriteId(deckId,cardIndex)];
 }
 
-function toggleFavorite(deckId, cardIndex){
+function toggleFavorite(deckId,cardIndex){
   const favs = getFavorites();
-  const id = favoriteId(deckId, cardIndex);
+  const id = favoriteId(deckId,cardIndex);
 
   if(favs[id]){
     delete favs[id];
   }else{
-    const d = DECKS.find(x => x.id === deckId);
-    const c = d?.cards?.[cardIndex];
-    if(c){
-      favs[id] = {
-        deckId,
-        cardIndex,
-        category:d.category,
-        deckName:d.name,
-        de:c.de,
-        en:c.en,
-        deExample:c.deExample || '',
-        enExample:c.enExample || '',
-        level:c.level || '',
-        note:c.note || ''
-      };
+    const ref = makeRef(deckId,cardIndex);
+    if(ref){
+      favs[id] = {deckId,cardIndex};
     }
   }
 
   saveFavorites(favs);
 }
 
-function favoriteCards(){
-  const favs = getFavorites();
-  return Object.values(favs)
-    .map(f => {
-      const d = DECKS.find(x => x.id === f.deckId);
-      const c = d?.cards?.[f.cardIndex];
-      return d && c ? { ...f, card:c } : null;
-    })
+function favoriteRefs(){
+  return Object.values(getFavorites())
+    .map(f=>makeRef(f.deckId,f.cardIndex))
     .filter(Boolean);
 }
 
+/* ---------------------------------------------------------
+   SRS — every card is independent
+   --------------------------------------------------------- */
+
+function getSrsMap(){
+  const map = readJSON(SRS_KEY,{});
+  return map && typeof map === 'object' ? map : {};
+}
+
+function saveSrsMap(map){
+  writeJSON(SRS_KEY,map);
+}
+
+function getSrsRecord(ref){
+  return getSrsMap()[refId(ref)] || null;
+}
+
+function intervalForStage(stage){
+  if(stage <= 0) return 1;
+  return SRS_INTERVALS[Math.min(stage-1,SRS_INTERVALS.length-1)];
+}
+
+function updateSrs(ref,result){
+  const today = localDateISO();
+  const map = getSrsMap();
+  const id = refId(ref);
+
+  const rec = map[id] || {
+    stage:0,
+    dueDate:today,
+    startedDate:today,
+    lastReviewedDate:null,
+    lastSuccessDate:null,
+    failedDate:null,
+    lapses:0
+  };
+
+  rec.lastReviewedDate = today;
+
+  if(result === 'again'){
+    // Critical behavior:
+    // - never reset stage
+    // - remains due today
+    // - failure is remembered for this calendar day
+    rec.failedDate = today;
+    rec.lapses = (rec.lapses || 0) + 1;
+    rec.dueDate = today;
+  }else{
+    const failedToday = rec.failedDate === today;
+    const alreadySucceededToday = rec.lastSuccessDate === today;
+
+    if(rec.stage === 0){
+      // First successful learning establishes stage 1.
+      rec.stage = 1;
+      rec.lastSuccessDate = today;
+      rec.dueDate = addDays(today,1);
+    }else if(failedToday){
+      // If a scheduled review was failed today and later answered correctly:
+      // keep the current stage; do NOT reset and do NOT advance.
+      // Ask again tomorrow as a short reinforcement.
+      rec.lastSuccessDate = today;
+      rec.dueDate = addDays(today,1);
+    }else if(!alreadySucceededToday){
+      // Maximum ONE SRS advancement per successful calendar day.
+      rec.stage = Math.min(rec.stage+1,SRS_INTERVALS.length);
+      rec.lastSuccessDate = today;
+      rec.dueDate = addDays(today,intervalForStage(rec.stage));
+    }else{
+      // Extra "Known" clicks on the same day never count as extra SRS steps.
+      rec.dueDate = addDays(today,intervalForStage(rec.stage));
+    }
+  }
+
+  map[id] = rec;
+  saveSrsMap(map);
+  updateSrsDashboard();
+  return rec;
+}
+
+function dueRefs(){
+  const today = localDateISO();
+  const map = getSrsMap();
+
+  return allCardRefs()
+    .filter(ref=>{
+      const rec = map[refId(ref)];
+      return rec && rec.dueDate && rec.dueDate <= today;
+    })
+    .sort((a,b)=>{
+      const ar = map[refId(a)];
+      const br = map[refId(b)];
+
+      // overdue first, then lower stage
+      if(ar.dueDate !== br.dueDate) return ar.dueDate.localeCompare(br.dueDate);
+      return (ar.stage || 0) - (br.stage || 0);
+    });
+}
+
+function srsStats(){
+  const map = getSrsMap();
+  const today = localDateISO();
+
+  let due = 0;
+  let learning = 0;
+  let established = 0;
+  let started = 0;
+
+  Object.values(map).forEach(rec=>{
+    if(!rec || !rec.startedDate) return;
+    started++;
+
+    if(rec.dueDate && rec.dueDate <= today) due++;
+    if((rec.stage || 0) >= 1 && (rec.stage || 0) <= 2) learning++;
+    if((rec.stage || 0) >= 3) established++;
+  });
+
+  return {due,learning,established,started};
+}
+
+function updateSrsDashboard(){
+  const s = srsStats();
+  dueStat.textContent = s.due;
+  learningStat.textContent = s.learning;
+  stableStat.textContent = s.established;
+  dueBadge.textContent = s.due;
+}
+
+function srsStatus(ref){
+  const rec = getSrsRecord(ref);
+  const today = localDateISO();
+
+  if(!rec){
+    return {
+      text:'New',
+      className:'new',
+      detail:'Not started'
+    };
+  }
+
+  if(rec.dueDate <= today){
+    const late = dayDifference(rec.dueDate,today);
+    return {
+      text: late > 0 ? `Overdue ${late}d` : 'Due today',
+      className:'due',
+      detail:`Step ${rec.stage}`
+    };
+  }
+
+  const inDays = dayDifference(today,rec.dueDate);
+  return {
+    text:`In ${inDays}d`,
+    className:'future',
+    detail:`Step ${rec.stage}`
+  };
+}
+
+/* ---------------------------------------------------------
+   Existing local deck progress
+   --------------------------------------------------------- */
+
 function getSettings(){
-  return readJSON(SETTINGS_KEY, {
+  return readJSON(SETTINGS_KEY,{
     front:'de',
     selectedDeck:null
   });
 }
 
 function saveSettings(patch){
-  writeJSON(SETTINGS_KEY, {
+  writeJSON(SETTINGS_KEY,{
     ...getSettings(),
     ...patch
   });
@@ -743,28 +1241,27 @@ function saveSettings(patch){
 function getProgress(deckId = deck?.id){
   if(!deckId) return {known:[],again:[]};
 
-  const p = readJSON(progressKey(deckId), {known:[],again:[]});
+  const p = readJSON(progressKey(deckId),{known:[],again:[]});
   return {
-    known: uniqueNumbers(p.known),
-    again: uniqueNumbers(p.again)
+    known:uniqueNumbers(p.known),
+    again:uniqueNumbers(p.again)
   };
 }
 
 function saveProgress(p){
   if(!deck) return;
 
-  // A card must never be in both lists.
   const known = uniqueNumbers(p.known);
   const knownSet = new Set(known);
-  const again = uniqueNumbers(p.again).filter(x => !knownSet.has(x));
+  const again = uniqueNumbers(p.again).filter(x=>!knownSet.has(x));
 
-  writeJSON(progressKey(deck.id), {known,again});
+  writeJSON(progressKey(deck.id),{known,again});
 }
 
 function saveSession(){
-  if(!deck) return;
+  if(!deck || specialMode) return;
 
-  writeJSON(sessionKey(deck.id), {
+  writeJSON(sessionKey(deck.id),{
     version:SESSION_VERSION,
     idx,
     order,
@@ -775,12 +1272,11 @@ function saveSession(){
 
 function makeFreshSession(deckObj){
   const p = getProgress(deckObj.id);
-  const graded = new Set([...p.known, ...p.again]);
+  const graded = new Set([...p.known,...p.again]);
 
-  // If the user has not seen every card yet, show ONLY unseen cards.
   const unseen = deckObj.cards
     .map((_,i)=>i)
-    .filter(i => !graded.has(i));
+    .filter(i=>!graded.has(i));
 
   if(unseen.length){
     return {
@@ -792,7 +1288,6 @@ function makeFreshSession(deckObj){
     };
   }
 
-  // Once every card has been seen, review ONLY the cards marked Again.
   if(p.again.length){
     return {
       version:SESSION_VERSION,
@@ -813,13 +1308,13 @@ function makeFreshSession(deckObj){
 }
 
 function loadSession(deckObj){
-  const saved = readJSON(sessionKey(deckObj.id), null);
+  const saved = readJSON(sessionKey(deckObj.id),null);
 
   const validOrder =
     saved &&
     saved.version === SESSION_VERSION &&
     Array.isArray(saved.order) &&
-    saved.order.every(i =>
+    saved.order.every(i=>
       Number.isInteger(i) &&
       i >= 0 &&
       i < deckObj.cards.length
@@ -858,72 +1353,17 @@ function applySession(session){
   flip = false;
 }
 
-
-function updateViewControls(){
-  tableViewBtn.classList.toggle('active', viewMode === 'table' && !favoritesMode);
-  flashViewBtn.classList.toggle('active', viewMode === 'flashcards' || favoritesMode);
-  flashControls.style.display = (viewMode === 'flashcards' || favoritesMode) ? 'flex' : 'none';
-  tableViewBtn.disabled = favoritesMode;
-}
-
-function setView(mode){
-  if(favoritesMode && mode === 'table') return;
-  viewMode = mode;
-  updateViewControls();
-  render();
-}
-
-function progressStatus(deckId, cardIndex){
-  const p = getProgress(deckId);
-  if(p.known.includes(cardIndex)) return ['Known','status-known'];
-  if(p.again.includes(cardIndex)) return ['Review','status-review'];
-  return ['New','status-new'];
-}
-
-function renderTable(){
-  if(!deck) return;
-  const p = getProgress(deck.id);
-  const favCount = deck.cards.filter((_,i)=>isFavorite(deck.id,i)).length;
-  info.textContent = `${deck.count} words · ${p.known.length} known · ${p.again.length} to review · ${favCount} favorite${favCount===1?'':'s'}`;
-
-  const rows = deck.cards.map((c,cardIndex)=>{
-    const [status,statusClass] = progressStatus(deck.id,cardIndex);
-    const fav = isFavorite(deck.id,cardIndex);
-    return `
-      <tr>
-        <td><button class="table-fav ${fav?'active':''}" data-fav-index="${cardIndex}" title="${fav?'Remove from favorites':'Add to favorites'}">${fav?'★':'☆'}</button></td>
-        <td class="word-cell"><button class="speakable" data-speak="${esc(c.de)}" title="Play German word"><span>${esc(c.de)}</span><span class="speaker-icon">🔊</span></button></td>
-        <td class="meaning-cell">${esc(c.en)}</td>
-        <td class="example-cell">${c.deExample ? `<button class="speakable" data-speak="${esc(c.deExample)}" title="Play German example"><span>${esc(c.deExample)}</span><span class="speaker-icon">🔊</span></button>` : '—'}</td>
-        <td class="translation-cell">${c.enExample ? esc(c.enExample) : '—'}</td>
-        <td class="level-cell">${esc(c.level || '')}</td>
-        <td class="${statusClass}">${status}</td>
-      </tr>`;
-  }).join('');
-
-  study.className='';
-  study.innerHTML = `
-    <div class="browse-wrap">
-      <table class="words-table">
-        <thead><tr><th>★</th><th>German</th><th>Meaning</th><th>German example</th><th>Translation</th><th>Level</th><th>Status</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>
-    <div class="tts-note">🔊 Audio is allowed only when the browser exposes a voice explicitly marked as German (de / de-DE).</div>`;
-
-  study.querySelectorAll('[data-speak]').forEach(btn=>{
-    btn.onclick = e => { e.stopPropagation(); speakGerman(btn.dataset.speak); };
-  });
-  study.querySelectorAll('[data-fav-index]').forEach(btn=>{
-    btn.onclick = () => { toggleFavorite(deck.id,Number(btn.dataset.favIndex)); renderList(); renderTable(); };
-  });
-}
+/* ---------------------------------------------------------
+   Sidebar + modes
+   --------------------------------------------------------- */
 
 function renderList(){
   list.innerHTML = '';
 
   const cats = {};
-  DECKS.forEach(d => (cats[d.category] ??= []).push(d));
+  DECKS.forEach(d=>(cats[d.category] ??= []).push(d));
+
+  const favs = getFavorites();
 
   for(const [category,decks] of Object.entries(cats)){
     const h = document.createElement('div');
@@ -931,25 +1371,48 @@ function renderList(){
     h.textContent = category;
     list.appendChild(h);
 
-    decks.forEach(d => {
+    decks.forEach(d=>{
       const p = getProgress(d.id);
+      const hasFav = Object.values(favs).some(f=>f.deckId===d.id);
 
       const b = document.createElement('button');
-      b.className = 'deck' + (deck?.id === d.id ? ' active' : '');
+      b.className = 'deck' + (!specialMode && deck?.id === d.id ? ' active' : '');
       b.innerHTML = `
         <span>${esc(d.name)}</span>
-        <span class="count">${p.known.length}/${d.count}${Object.values(getFavorites()).some(f=>f.deckId===d.id) ? ' ★' : ''}</span>
+        <span class="count">${p.known.length}/${d.count}${hasFav ? ' ★' : ''}</span>
       `;
-      b.onclick = () => selectDeck(d.id);
+      b.onclick = ()=>selectDeck(d.id);
       list.appendChild(b);
     });
   }
 }
 
+function updateViewControls(){
+  const aggregate = !!specialMode;
+
+  tableViewBtn.classList.toggle('active',viewMode === 'table' && !aggregate);
+  flashViewBtn.classList.toggle('active',viewMode === 'flashcards' || aggregate);
+
+  flashControls.style.display =
+    (viewMode === 'flashcards' || aggregate) ? 'flex' : 'none';
+
+  tableViewBtn.disabled = aggregate;
+}
+
+function setView(mode){
+  if(specialMode && mode === 'table') return;
+
+  viewMode = mode;
+  updateViewControls();
+  render();
+}
+
 function selectDeck(id){
-  favoritesMode = false;
+  specialMode = null;
+  specialRefs = [];
   viewMode = 'table';
-  deck = DECKS.find(d => d.id === id);
+
+  deck = DECKS.find(d=>d.id===id);
   if(!deck) return;
 
   applySession(loadSession(deck));
@@ -963,12 +1426,119 @@ function selectDeck(id){
   render();
 }
 
-function currentCardIndex(){
-  return order[idx];
+/* ---------------------------------------------------------
+   Table view
+   --------------------------------------------------------- */
+
+function renderTable(){
+  if(!deck) return;
+
+  const p = getProgress(deck.id);
+  const favCount = deck.cards.filter((_,i)=>isFavorite(deck.id,i)).length;
+
+  info.textContent =
+    `${deck.count} words · ${p.known.length} known · ${p.again.length} to review · ${favCount} favorite${favCount===1?'':'s'}`;
+
+  const rows = deck.cards.map((c,cardIndex)=>{
+    const ref = makeRef(deck.id,cardIndex);
+    const srs = srsStatus(ref);
+    const fav = isFavorite(deck.id,cardIndex);
+
+    return `
+      <tr>
+        <td data-label="Favorite">
+          <button
+            class="table-fav ${fav?'active':''}"
+            data-fav-index="${cardIndex}"
+            title="${fav?'Remove from favorites':'Add to favorites'}"
+          >${fav?'★':'☆'}</button>
+        </td>
+
+        <td data-label="German" class="word-cell">
+          <button class="speakable" data-speak="${esc(c.de)}" title="Play German word">
+            <span>${esc(c.de)}</span><span class="speaker-icon">🔊</span>
+          </button>
+        </td>
+
+        <td data-label="Meaning" class="meaning-cell">${esc(c.en)}</td>
+
+        <td data-label="German example" class="example-cell">
+          ${c.deExample ? `
+            <button class="speakable" data-speak="${esc(c.deExample)}" title="Play German example">
+              <span>${esc(c.deExample)}</span><span class="speaker-icon">🔊</span>
+            </button>
+          ` : '—'}
+        </td>
+
+        <td data-label="Translation" class="translation-cell">${c.enExample ? esc(c.enExample) : '—'}</td>
+        <td data-label="CEFR" class="level-cell">${esc(c.level || '')}</td>
+
+        <td data-label="Spaced repetition">
+          <span class="srs-pill ${srs.className}">
+            ${esc(srs.text)} · ${esc(srs.detail)}
+          </span>
+        </td>
+      </tr>`;
+  }).join('');
+
+  study.className = '';
+  study.innerHTML = `
+    <div class="browse-wrap">
+      <table class="words-table">
+        <thead>
+          <tr>
+            <th>★</th>
+            <th>German</th>
+            <th>Meaning</th>
+            <th>German example</th>
+            <th>Translation</th>
+            <th>CEFR</th>
+            <th>Spaced repetition</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+
+    <div class="tts-note">🔊 Audio only uses a browser voice explicitly identified as German (de / de-DE).</div>
+  `;
+
+  study.querySelectorAll('[data-speak]').forEach(btn=>{
+    btn.onclick = e=>{
+      e.stopPropagation();
+      speakGerman(btn.dataset.speak);
+    };
+  });
+
+  study.querySelectorAll('[data-fav-index]').forEach(btn=>{
+    btn.onclick = ()=>{
+      toggleFavorite(deck.id,Number(btn.dataset.favIndex));
+      renderList();
+      renderTable();
+    };
+  });
+}
+
+/* ---------------------------------------------------------
+   Flashcard helpers
+   --------------------------------------------------------- */
+
+function currentDeckRef(){
+  if(!deck || !order.length) return null;
+  return makeRef(deck.id,order[idx]);
+}
+
+function currentSpecialRef(){
+  if(!specialMode || !specialRefs.length) return null;
+  return specialRefs[order[idx]] || null;
+}
+
+function currentRef(){
+  return specialMode ? currentSpecialRef() : currentDeckRef();
 }
 
 function goPrevious(){
-  if(!deck || phase === 'complete') return;
+  if(phase === 'complete') return;
 
   if(idx > 0){
     idx--;
@@ -978,12 +1548,12 @@ function goPrevious(){
   }
 }
 
-function startNextRound(){
+function startNextDeckRound(){
   const p = getProgress();
 
   if(p.again.length){
     phase = 'review';
-    reviewRound = Math.max(1, reviewRound + 1);
+    reviewRound = Math.max(1,reviewRound+1);
     order = [...p.again];
     idx = 0;
     flip = false;
@@ -1001,9 +1571,8 @@ function startNextRound(){
   render();
 }
 
-function advanceAfterGrade(){
-  // Continue through the current round without wrapping.
-  if(idx + 1 < order.length){
+function advanceDeckAfterGrade(){
+  if(idx+1 < order.length){
     idx++;
     flip = false;
     saveSession();
@@ -1011,31 +1580,49 @@ function advanceAfterGrade(){
     return;
   }
 
-  // We reached the end of this round.
-  // The next round contains ONLY cards that are still marked Again.
-  startNextRound();
+  startNextDeckRound();
+}
+
+function advanceSpecial(){
+  if(idx+1 < order.length){
+    idx++;
+    flip = false;
+    render();
+  }else{
+    phase = 'complete';
+    flip = false;
+    render();
+  }
 }
 
 function grade(type){
-  if(!deck || phase === 'complete' || !order.length) return;
+  const ref = currentRef();
+  if(!ref || phase === 'complete') return;
 
-  if(favoritesMode){
-    if(idx + 1 < order.length){
-      idx++;
-      flip = false;
-      render();
-    }else{
-      phase = 'complete';
-      renderComplete();
-    }
+  if(specialMode === 'favorites'){
+    // Favorite review is practice only; it does not silently alter SRS.
+    advanceSpecial();
     return;
   }
 
-  const p = getProgress();
-  const cardIndex = currentCardIndex();
+  if(specialMode === 'due'){
+    updateSrs(ref,type);
+    // One pass per Due-Today session.
+    // "Again" stays due in storage, but does not loop instantly.
+    advanceSpecial();
+    renderList();
+    return;
+  }
 
-  p.known = p.known.filter(x => x !== cardIndex);
-  p.again = p.again.filter(x => x !== cardIndex);
+  // Normal deck flashcards:
+  // preserve the old Known/Again session behavior AND update SRS.
+  updateSrs(ref,type);
+
+  const p = getProgress();
+  const cardIndex = ref.cardIndex;
+
+  p.known = p.known.filter(x=>x!==cardIndex);
+  p.again = p.again.filter(x=>x!==cardIndex);
 
   if(type === 'known'){
     p.known.push(cardIndex);
@@ -1045,28 +1632,103 @@ function grade(type){
 
   saveProgress(p);
   renderList();
-  advanceAfterGrade();
+  advanceDeckAfterGrade();
+}
+
+/* ---------------------------------------------------------
+   Flashcard rendering
+   --------------------------------------------------------- */
+
+function germanMainMarkup(c,f,isFlipped){
+  const germanVisible =
+    (!isFlipped && f === 'de') ||
+    (isFlipped && f === 'en');
+
+  const value = isFlipped
+    ? (f === 'de' ? c.en : c.de)
+    : (f === 'de' ? c.de : c.en);
+
+  if(germanVisible){
+    return `
+      <button class="card-speech ${isFlipped?'meaning':'word'}" id="cardGermanSpeak" title="Play in German">
+        <span>${esc(value)}</span><span class="speaker-icon">🔊</span>
+      </button>
+    `;
+  }
+
+  return `<div class="${isFlipped?'meaning':'word'}">${esc(value)}</div>`;
+}
+
+function exampleMarkup(c,f){
+  if(!flip) return '';
+
+  const lines = [];
+
+  if(f === 'de'){
+    if(c.deExample){
+      lines.push(`
+        <button class="speakable" id="exampleGermanSpeak" title="Play German example">
+          <span>${esc(c.deExample)}</span><span class="speaker-icon">🔊</span>
+        </button>
+      `);
+    }
+    if(c.enExample) lines.push(`<div>${esc(c.enExample)}</div>`);
+  }else{
+    if(c.enExample) lines.push(`<div>${esc(c.enExample)}</div>`);
+    if(c.deExample){
+      lines.push(`
+        <button class="speakable" id="exampleGermanSpeak" title="Play German example">
+          <span>${esc(c.deExample)}</span><span class="speaker-icon">🔊</span>
+        </button>
+      `);
+    }
+  }
+
+  return lines.length
+    ? `<div class="example"><div class="example-lines">${lines.join('')}</div></div>`
+    : '';
 }
 
 function renderComplete(){
-  if(favoritesMode){
-    const favs = favoriteCards();
-    info.textContent = `${favs.length} favorite card${favs.length === 1 ? '' : 's'}`;
+  if(specialMode === 'due'){
+    const remaining = dueRefs().length;
+
+    info.textContent =
+      remaining
+        ? `${remaining} card${remaining===1?' is':'s are'} still due today`
+        : 'Nothing else is due today';
+
     study.className = '';
     study.innerHTML = `
-      <div class="card" style="cursor:default">
-        <div class="level">Favorites</div>
-        <div class="word">Favorites review complete ★</div>
-        <div class="example">
-          You reviewed all your favorite cards.
-        </div>
+      <div class="due-empty">
+        <div class="big">${remaining ? '📚' : '✅'}</div>
+        <strong>${remaining ? 'Due session finished' : 'All due cards are done'}</strong>
+        <p>
+          ${remaining
+            ? `${remaining} card${remaining===1?' is':'s are'} still due because you marked them Again. They were not reset; reopen “Review due today” later today when you want another pass.`
+            : 'Your next cards will appear here automatically when their individual due dates arrive.'}
+        </p>
+      </div>
+    `;
+    return;
+  }
+
+  if(specialMode === 'favorites'){
+    info.textContent = `${favoriteRefs().length} favorite card${favoriteRefs().length===1?'':'s'}`;
+
+    study.className = '';
+    study.innerHTML = `
+      <div class="due-empty">
+        <div class="big">★</div>
+        <strong>Favorites review complete</strong>
+        <p>You reviewed the current favorites list.</p>
       </div>
     `;
     return;
   }
 
   const p = getProgress();
-  const pct = Math.round((p.known.length / deck.count) * 100);
+  const pct = Math.round((p.known.length/deck.count)*100);
 
   info.textContent = `${deck.count} cards · ${p.known.length} known · 0 to review`;
 
@@ -1076,170 +1738,167 @@ function renderComplete(){
       <div class="level">Done</div>
       <div class="word">Deck complete 🎉</div>
       <div class="example">
-        You marked all ${deck.count} cards as Known.
+        You finished this deck session.
         <br><br>
-        Reset this deck whenever you want to study it again from the beginning.
+        Spaced-repetition dates are tracked separately for every word.
       </div>
-      <div class="hint">Your progress is saved locally on this device.</div>
     </div>
 
     <div class="progress">
-      <div class="bar">
-        <div class="fill" style="width:${pct}%"></div>
-      </div>
+      <div class="bar"><div class="fill" style="width:${pct}%"></div></div>
       <div class="ptext">${pct}% known</div>
     </div>
   `;
 }
 
-function render(){
-  if(!deck) return;
-
-  updateViewControls();
-
-  if(viewMode === 'table' && !favoritesMode){
-    renderTable();
-    return;
-  }
-
+function renderFlashcards(){
   if(phase === 'complete' || !order.length){
     renderComplete();
     return;
   }
 
-  const cardIndex = currentCardIndex();
-  const c = favoritesMode ? favoriteCards()[cardIndex]?.card : deck.cards[cardIndex];
-  if(!c){
+  const ref = currentRef();
+
+  if(!ref){
     phase = 'complete';
     renderComplete();
     return;
   }
-  const f = front.value;
 
-  const main = flip
-    ? (f === 'de' ? c.en : c.de)
-    : (f === 'de' ? c.de : c.en);
+  const c = ref.card;
+  const f = front.value;
+  const srs = srsStatus(ref);
 
   const label = flip
     ? (f === 'de' ? 'English' : 'German')
     : (f === 'de' ? 'German' : 'English');
 
-  const ex = flip
-    ? (f === 'de'
-        ? [c.deExample,c.enExample]
-        : [c.enExample,c.deExample]
-      ).filter(Boolean).join('<br>')
-    : '';
+  if(specialMode === 'due'){
+    info.textContent =
+      `${idx+1}/${order.length} due today · ${srs.detail} · ${ref.deck.name}`;
+  }else if(specialMode === 'favorites'){
+    info.textContent =
+      `${idx+1}/${order.length} favorites · ${ref.deck.name}`;
+  }else{
+    const p = getProgress();
+    const roundText = phase === 'initial'
+      ? `First pass · ${order.length} unseen card${order.length===1?'':'s'}`
+      : `Review round ${reviewRound} · ${order.length} card${order.length===1?'':'s'} marked Again`;
 
-  const p = getProgress();
-  const pct = Math.round((p.known.length / deck.count) * 100);
-
-  const roundText = phase === 'initial'
-    ? `First pass · ${order.length} unseen card${order.length === 1 ? '' : 's'}`
-    : `Review round ${reviewRound} · ${order.length} card${order.length === 1 ? '' : 's'} marked Again`;
-
-  info.textContent =
-    `${roundText} · ${p.known.length} known · ${p.again.length} to review`;
+    info.textContent =
+      `${roundText} · ${p.known.length} known · ${p.again.length} to review`;
+  }
 
   study.className = '';
   study.innerHTML = `
+    ${specialMode === 'due' ? `
+      <div class="due-explain">
+        One successful calendar day can advance a word by at most one SRS step.
+        If you press <strong>Again</strong>, that word keeps its current step and stays due today — it is never reset to zero.
+      </div>
+    ` : ''}
+
     <div class="card" id="card">
-      <button class="favorite ${favoritesMode ? 'active' : (isFavorite(deck.id, cardIndex) ? 'active' : '')}" id="favoriteBtn" title="Favorite">
-        ${favoritesMode || isFavorite(deck.id, cardIndex) ? '★' : '☆'}
-      </button>
+      <button
+        class="favorite ${isFavorite(ref.deckId,ref.cardIndex)?'active':''}"
+        id="favoriteBtn"
+        title="Favorite"
+      >${isFavorite(ref.deckId,ref.cardIndex)?'★':'☆'}</button>
+
       <div class="label">${label}</div>
-      <div class="level">${esc(c.level)}</div>
+      <div class="level">${esc(c.level || '')} · SRS ${getSrsRecord(ref)?.stage || 0}</div>
 
-      <div id="mainCardText" class="${flip ? 'meaning' : 'word'}">${esc(main)}</div>
-
-      ${ex ? `<div class="example" id="exampleCardText">${ex}</div>` : ''}
+      ${germanMainMarkup(c,f,flip)}
+      ${exampleMarkup(c,f)}
       ${flip && c.note ? `<div class="note">${esc(c.note)}</div>` : ''}
 
-      <div class="hint">
-        ${flip ? 'Tap to hide answer' : 'Tap to reveal answer'} · click German text to hear it
-      </div>
+      <div class="hint">${flip ? 'Tap the empty card area to hide answer' : 'Tap the empty card area to reveal answer'}</div>
     </div>
 
     <div class="actions">
-      <button class="again" id="again">Again</button>
-      <button id="prev" ${idx === 0 ? 'disabled' : ''}>Previous</button>
-      <button class="known" id="known">Known</button>
+      <button class="again" id="again">${specialMode==='favorites'?'Next':'Again'}</button>
+      <button id="prev" ${idx===0?'disabled':''}>Previous</button>
+      <button class="known" id="known">${specialMode==='favorites'?'Next':'Known'}</button>
     </div>
 
-    <div class="progress">
-      <div class="bar">
-        <div class="fill" style="width:${pct}%"></div>
-      </div>
-      <div class="ptext">${idx+1}/${order.length} · ${pct}% known</div>
-    </div>
+    <div class="tts-note">🔊 German playback is blocked unless the browser exposes an explicitly German voice.</div>
   `;
 
+  document.getElementById('favoriteBtn').onclick = e=>{
+    e.stopPropagation();
+    toggleFavorite(ref.deckId,ref.cardIndex);
 
-  const germanMainVisible = (!flip && f === 'de') || (flip && f === 'en');
-  const mainCardText = document.getElementById('mainCardText');
-  if(germanMainVisible && mainCardText){
-    mainCardText.classList.add('click-speak');
-    mainCardText.title = 'Click to hear German';
-    mainCardText.onclick = e => {
+    if(specialMode === 'favorites'){
+      specialRefs = favoriteRefs();
+
+      if(!specialRefs.length){
+        phase = 'complete';
+        renderList();
+        render();
+        return;
+      }
+
+      order = specialRefs.map((_,i)=>i);
+      idx = Math.min(idx,order.length-1);
+    }
+
+    renderList();
+    render();
+  };
+
+  const wordSpeak = document.getElementById('cardGermanSpeak');
+  if(wordSpeak){
+    wordSpeak.onclick = e=>{
       e.stopPropagation();
       speakGerman(c.de);
     };
   }
 
-  const exampleCardText = document.getElementById('exampleCardText');
-  if(flip && c.deExample && exampleCardText){
-    exampleCardText.classList.add('click-speak');
-    exampleCardText.title = 'Click to hear the German example';
-    exampleCardText.onclick = e => {
+  const exampleSpeak = document.getElementById('exampleGermanSpeak');
+  if(exampleSpeak){
+    exampleSpeak.onclick = e=>{
       e.stopPropagation();
       speakGerman(c.deExample);
     };
   }
 
-  document.getElementById('favoriteBtn').onclick = (e) => {
-    e.stopPropagation();
-
-    if(favoritesMode){
-      const fav = favoriteCards()[cardIndex];
-      if(fav){
-        toggleFavorite(fav.deckId, fav.cardIndex);
-
-        const remaining = favoriteCards();
-        if(remaining.length === 0){
-          phase = 'complete';
-          renderComplete();
-          return;
-        }
-
-        order = remaining.map((_,i)=>i);
-        idx = Math.min(idx, order.length - 1);
-        render();
-      }
-      return;
-    }
-
-    toggleFavorite(deck.id, cardIndex);
-    render();
-  };
-
-  document.getElementById('card').onclick = () => {
+  document.getElementById('card').onclick = ()=>{
     flip = !flip;
     render();
   };
 
   document.getElementById('prev').onclick = goPrevious;
-  document.getElementById('again').onclick = () => grade('again');
-  document.getElementById('known').onclick = () => grade('known');
+  document.getElementById('again').onclick = ()=>grade('again');
+  document.getElementById('known').onclick = ()=>grade('known');
 }
 
-tableViewBtn.onclick = () => setView('table');
-flashViewBtn.onclick = () => setView('flashcards');
+/* ---------------------------------------------------------
+   Unified render
+   --------------------------------------------------------- */
 
-document.getElementById('shuffle').onclick = () => {
-  if(!deck || phase === 'complete' || order.length < 2) return;
+function render(){
+  updateSrsDashboard();
+  updateViewControls();
 
-  for(let i = order.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
+  if(viewMode === 'table' && !specialMode){
+    renderTable();
+  }else{
+    renderFlashcards();
+  }
+}
+
+/* ---------------------------------------------------------
+   Controls
+   --------------------------------------------------------- */
+
+tableViewBtn.onclick = ()=>setView('table');
+flashViewBtn.onclick = ()=>setView('flashcards');
+
+document.getElementById('shuffle').onclick = ()=>{
+  if(phase === 'complete' || order.length < 2) return;
+
+  for(let i=order.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
     [order[i],order[j]] = [order[j],order[i]];
   }
 
@@ -1249,28 +1908,20 @@ document.getElementById('shuffle').onclick = () => {
   render();
 };
 
-front.onchange = () => {
+front.onchange = ()=>{
   flip = false;
   saveSettings({front:front.value});
   render();
 };
 
-document.getElementById('reset').onclick = () => {
-  if(!deck) return;
-
-  if(favoritesMode){
-    const favs = favoriteCards();
-    order = favs.map((_,i)=>i);
-    idx = 0;
-    phase = favs.length ? 'review' : 'complete';
-    flip = false;
-    render();
-    return;
-  }
+document.getElementById('reset').onclick = ()=>{
+  if(!deck || specialMode) return;
 
   localStorage.removeItem(progressKey(deck.id));
   localStorage.removeItem(sessionKey(deck.id));
 
+  // Intentionally does NOT delete the SRS history.
+  // Reset deck = reset the current deck practice session only.
   applySession(makeFreshSession(deck));
   saveSession();
 
@@ -1278,34 +1929,38 @@ document.getElementById('reset').onclick = () => {
   render();
 };
 
+document.getElementById('reviewFavorites').onclick = ()=>{
+  const refs = favoriteRefs();
 
-document.getElementById('reviewFavorites').onclick = () => {
-  const favs = favoriteCards();
-
-  if(!favs.length){
-    study.className = 'empty';
-    study.innerHTML = 'You have no favorite words yet. Tap ☆ on any card to save it.';
-    title.textContent = 'Favorites';
-    info.textContent = '0 favorite cards';
-    favoritesMode = true;
-    viewMode = 'flashcards';
-    updateViewControls();
-    return;
-  }
-
-  favoritesMode = true;
+  specialMode = 'favorites';
+  specialRefs = refs;
   viewMode = 'flashcards';
 
-  // Keep a real deck object only as a UI anchor; cards are read from favoriteCards().
-  deck = DECKS.find(d => d.id === favs[0].deckId) || DECKS[0];
-  order = favs.map((_,i)=>i);
+  title.textContent = 'Favorite Words';
+  order = refs.map((_,i)=>i);
   idx = 0;
-  phase = 'review';
+  phase = refs.length ? 'review' : 'complete';
   reviewRound = 0;
   flip = false;
 
-  title.textContent = 'Favorite Words';
-  info.textContent = `${favs.length} favorite card${favs.length === 1 ? '' : 's'}`;
+  renderList();
+  render();
+};
+
+document.getElementById('reviewDue').onclick = ()=>{
+  const refs = dueRefs();
+
+  specialMode = 'due';
+  specialRefs = refs;
+  viewMode = 'flashcards';
+
+  title.textContent = 'Due Today';
+  order = refs.map((_,i)=>i);
+  idx = 0;
+  phase = refs.length ? 'review' : 'complete';
+  reviewRound = 0;
+  flip = false;
+
   renderList();
   render();
 };
@@ -1315,10 +1970,11 @@ function boot(){
   front.value = settings.front === 'en' ? 'en' : 'de';
 
   renderList();
+  updateSrsDashboard();
   updateViewControls();
 
   const initialDeck =
-    DECKS.find(d => d.id === settings.selectedDeck) ||
+    DECKS.find(d=>d.id===settings.selectedDeck) ||
     DECKS[0];
 
   if(initialDeck){
