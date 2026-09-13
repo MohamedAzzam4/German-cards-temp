@@ -908,8 +908,7 @@ select{
 
 /* Desktop workspace refinement */
 :root{
-  --page-gutter:clamp(20px,2.4vw,40px);
-  --content-max:1720px;
+  --page-gutter:clamp(12px,1.5vw,24px);
   --sidebar-width:320px;
   --focus:#74d69d;
 }
@@ -959,9 +958,9 @@ select:focus-visible,
 }
 
 .app{
-  width:min(100%,var(--content-max));
+  width:100%;
   max-width:none;
-  padding:24px var(--page-gutter) 40px;
+  padding:16px var(--page-gutter) 32px;
 }
 
 header{
@@ -1059,6 +1058,20 @@ h1{font-size:clamp(24px,2vw,30px)}
   padding:22px;
 }
 
+.main.table-mode{
+  min-height:0;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent !important;
+  box-shadow:none;
+}
+
+.main.table-mode .toolbar{
+  margin:0;
+  padding:6px 0 16px;
+}
+
 .srs-box{padding:14px;margin-bottom:14px}
 .srs-box-title{margin-bottom:12px}
 .srs-stats{gap:8px;margin-bottom:10px}
@@ -1099,10 +1112,24 @@ h1{font-size:clamp(24px,2vw,30px)}
 .flash-controls .primary{min-height:40px;padding-inline:16px}
 
 .browse-wrap{
-  max-height:calc(100vh - 244px);
-  border-radius:14px;
+  max-height:none;
+  overflow-x:auto;
+  overflow-y:visible;
+  border-radius:0;
   scrollbar-width:thin;
   scrollbar-color:#2d6b49 #0b1a12;
+}
+
+.table-mode .browse-wrap{
+  border:0;
+  background:transparent !important;
+}
+
+.table-mode .words-table{min-width:1050px}
+
+.table-mode .tts-note{
+  width:100%;
+  margin-top:12px;
 }
 
 .words-table{
@@ -1192,12 +1219,17 @@ h1{font-size:clamp(24px,2vw,30px)}
   }
 }
 
+@media(min-width:1200px){
+  .table-mode .browse-wrap{overflow:visible}
+}
+
 @media(max-width:1180px) and (min-width:761px){
   :root{--sidebar-width:280px}
-  .app{padding-inline:20px}
+  .app{padding-inline:16px}
   .layout{gap:14px}
   .layout.sidebar-collapsed{grid-template-columns:72px minmax(0,1fr)}
   .main{padding:18px}
+  .main.table-mode{padding:0}
   .toolbar{align-items:flex-start}
   .controls{width:100%;justify-content:space-between}
   .card{min-height:460px;padding-inline:40px}
@@ -1212,8 +1244,10 @@ h1{font-size:clamp(24px,2vw,30px)}
   .side{position:static;max-height:260px}
   .layout.sidebar-collapsed .side{max-height:68px}
   .main{min-height:0;padding:13px}
+  .main.table-mode{padding:0}
   .toolbar{margin:0 0 14px;padding:0 0 14px}
-  .browse-wrap{max-height:none}
+  .table-mode .toolbar{margin:0 2px 14px;padding:4px 0 14px}
+  .browse-wrap{max-height:none;overflow:visible}
   .words-table{min-width:0;table-layout:auto}
   .card{min-height:345px;padding:46px 18px 28px}
   .word{font-size:32px}
@@ -1347,6 +1381,7 @@ const tableViewBtn = document.getElementById('tableViewBtn');
 const flashViewBtn = document.getElementById('flashViewBtn');
 const flashControls = document.getElementById('flashControls');
 const ttsToast = document.getElementById('ttsToast');
+const mainPanel = document.querySelector('.main');
 const layout = document.querySelector('.layout');
 const sidebarToggle = document.getElementById('sidebarToggle');
 const sidebarContent = document.getElementById('sidebarContent');
@@ -1879,11 +1914,13 @@ function renderList(){
 
 function updateViewControls(){
   const aggregate = !!specialMode;
+  const tableMode = viewMode === 'table' && !aggregate;
 
-  tableViewBtn.classList.toggle('active',viewMode === 'table' && !aggregate);
+  tableViewBtn.classList.toggle('active',tableMode);
   flashViewBtn.classList.toggle('active',viewMode === 'flashcards' || aggregate);
-  tableViewBtn.setAttribute('aria-pressed',String(viewMode === 'table' && !aggregate));
+  tableViewBtn.setAttribute('aria-pressed',String(tableMode));
   flashViewBtn.setAttribute('aria-pressed',String(viewMode === 'flashcards' || aggregate));
+  mainPanel.classList.toggle('table-mode',tableMode);
 
   flashControls.style.display =
     (viewMode === 'flashcards' || aggregate) ? 'flex' : 'none';
