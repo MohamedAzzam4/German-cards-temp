@@ -66,8 +66,14 @@ test('chooses the newest complete snapshot and avoids redundant syncs', () => {
     updatedAtMs: 100,
     settings: {}, favorites: {}, srs: {}, progress: {}, sessions: {}
   };
-  assert.equal(pickSyncDirection({ ...base, updatedAtMs: 200 }, base), 'upload');
+  const changedLocal = {
+    ...base,
+    updatedAtMs: 200,
+    settings: { front: 'en' }
+  };
+  assert.equal(pickSyncDirection(changedLocal, base), 'upload');
   assert.equal(pickSyncDirection(base, { ...base, updatedAtMs: 200 }), 'none');
+  assert.equal(pickSyncDirection({ ...base, updatedAtMs: 300 }, base), 'none');
   assert.equal(pickSyncDirection(base, null), 'upload');
   assert.equal(snapshotsEqual(base, { ...base, updatedAtMs: 999 }), true);
 });

@@ -47,6 +47,7 @@ const progressRef = uid => doc(db, `artifacts/${APP_ID}/users/${uid}/progress/ma
 let saveTimer = null;
 let suppressLocalTracking = false;
 let syncInFlight = Promise.resolve();
+let authRevision = 0;
 
 function setStatus(message, state = 'local') {
   statusEl.textContent = message;
@@ -77,15 +78,27 @@ function markLocalChange() {
 }
 
 Storage.prototype.setItem = function(key, value) {
+  const previousValue = this === localStorage ? this.getItem(key) : null;
   originalSetItem.call(this, key, value);
-  if (this === localStorage && key.startsWith(STORAGE_PREFIX) && key !== CLOUD_META_KEY) {
+  if (
+    this === localStorage &&
+    key.startsWith(STORAGE_PREFIX) &&
+    key !== CLOUD_META_KEY &&
+    previousValue !== String(value)
+  ) {
     markLocalChange();
   }
 };
 
 Storage.prototype.removeItem = function(key) {
+  const hadValue = this === localStorage && this.getItem(key) !== null;
   originalRemoveItem.call(this, key);
-  if (this === localStorage && key.startsWith(STORAGE_PREFIX) && key !== CLOUD_META_KEY) {
+  if (
+    this === localStorage &&
+    key.startsWith(STORAGE_PREFIX) &&
+    key !== CLOUD_META_KEY &&
+    hadValue
+  ) {
     markLocalChange();
   }
 };
@@ -95,7 +108,7 @@ function localSnapshot() {
 }
 
 async function uploadProgress(user) {
-  if (!user) return;
+  if (!user || auth.currentUser?.uid !== user.uid) return;
   const updatedAtMs = Math.max(Date.now(), readMeta().lastChangedAtMs || 0);
   writeMeta({ lastChangedAtMs: updatedAtMs });
   const snapshot = captureSnapshot(localStorage, decks, updatedAtMs);
@@ -107,6 +120,8 @@ async function uploadProgress(user) {
     snapshot,
     lastUpdated: serverTimestamp()
   }, { mergeFields: ['appId', 'schemaVersion', 'snapshot', 'lastUpdated'] });
+
+  if (auth.currentUser?.uid !== user.uid) return;
   writeMeta({ lastSyncedAtMs: Date.now() });
   setStatus(`Synced as ${user.displayName || user.email || 'learner'}`, 'synced');
 }
@@ -118,12 +133,15 @@ function scheduleCloudSave() {
     return;
   }
 
+  const user = auth.currentUser;
   saveTimer = window.setTimeout(() => {
     syncInFlight = syncInFlight
-      .then(() => uploadProgress(auth.currentUser))
+      .then(() => uploadProgress(user))
       .catch(error => {
         console.warn('Cloud progress save failed:', error);
-        setStatus('Cloud sync unavailable · saved locally', 'error');
+        if (auth.currentUser?.uid === user.uid) {
+          setStatus('Cloud sync unavailable · saved locally', 'error');
+        }
       });
   }, SAVE_DELAY_MS);
 }
@@ -131,6 +149,8 @@ function scheduleCloudSave() {
 async function reconcileProgress(user) {
   setStatus('Checking cloud progress…', 'syncing');
   const remoteDoc = await getDoc(progressRef(user.uid));
+  if (auth.currentUser?.uid !== user.uid) return;
+
   const remoteSnapshot = remoteDoc.exists() ? remoteDoc.data().snapshot : null;
   const direction = pickSyncDirection(localSnapshot(), remoteSnapshot);
 
@@ -141,11 +161,16 @@ async function reconcileProgress(user) {
 
   if (direction === 'download') {
     suppressLocalTracking = true;
-    const applied = applySnapshot(localStorage, remoteSnapshot);
-    suppressLocalTracking = false;
+    let applied = false;
+    try {
+      applied = applySnapshot(localStorage, remoteSnapshot);
+      if (applied) window.refreshGermanCardsFromStorage?.();
+    } finally {
+      suppressLocalTracking = false;
+    }
+
     if (applied) {
       setStatus(`Synced as ${user.displayName || user.email || 'learner'}`, 'synced');
-      window.location.reload();
       return;
     }
     await uploadProgress(user);
@@ -180,7 +205,12 @@ logoutButton.addEventListener('click', async () => {
   }
 });
 
+setStatus('Checking sign-in…', 'syncing');
+
 onAuthStateChanged(auth, user => {
+  const revision = ++authRevision;
+  window.clearTimeout(saveTimer);
+  saveTimer = null;
   loginButton.hidden = !!user;
   logoutButton.hidden = !user;
 
@@ -190,9 +220,14 @@ onAuthStateChanged(auth, user => {
   }
 
   syncInFlight = syncInFlight
-    .then(() => reconcileProgress(user))
+    .then(() => {
+      if (revision !== authRevision || auth.currentUser?.uid !== user.uid) return;
+      return reconcileProgress(user);
+    })
     .catch(error => {
       console.warn('Cloud progress load failed:', error);
-      setStatus('Cloud sync unavailable · saved locally', 'error');
+      if (revision === authRevision && auth.currentUser?.uid === user.uid) {
+        setStatus('Cloud sync unavailable · saved locally', 'error');
+      }
     });
 });

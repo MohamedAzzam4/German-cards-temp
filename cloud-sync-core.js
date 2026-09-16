@@ -94,8 +94,8 @@ export function applySnapshot(storage, snapshot) {
 
 export function pickSyncDirection(localSnapshot, remoteSnapshot) {
   if (!remoteSnapshot) return 'upload';
+  if (snapshotsEqual(localSnapshot, remoteSnapshot)) return 'none';
   if (!hasLearningData(localSnapshot) && hasLearningData(remoteSnapshot)) return 'download';
   if ((localSnapshot?.updatedAtMs || 0) > (remoteSnapshot.updatedAtMs || 0)) return 'upload';
-  if (snapshotsEqual(localSnapshot, remoteSnapshot)) return 'none';
   return 'download';
 }
