@@ -1282,26 +1282,81 @@ h1{font-size:clamp(24px,2vw,30px)}
   .card{min-height:460px;padding-inline:40px}
 }
 
-@media(max-width:760px){
-  .app{padding:10px}
-  header{min-height:auto;padding:4px 2px}
+@media(max-width:760px), (max-width:900px) and (max-height:500px){
+  .app{padding:10px 10px 24px}
+  header{
+    min-height:auto;
+    margin-bottom:14px;
+    padding:4px 2px;
+    gap:12px;
+  }
+  .brand{width:100%;align-items:center}
   .logo{width:42px;height:42px}
+  h1{font-size:23px;line-height:1.2}
   .sub{display:none}
-  #reset{min-width:auto;min-height:40px;padding-inline:12px}
+  .save-note{margin-top:4px;font-size:11px}
+  .header-actions{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    width:100%;
+    gap:8px;
+  }
+  .cloud-status{
+    grid-column:1/-1;
+    width:100%;
+    min-height:40px;
+    justify-content:flex-start;
+    padding:8px 12px;
+    line-height:1.35;
+  }
+  .cloud-auth,
+  #reset{
+    width:100%;
+    min-width:0;
+    min-height:44px;
+    padding-inline:10px;
+  }
   .layout,
   .layout.sidebar-collapsed{grid-template-columns:minmax(0,1fr)}
-  .side{position:static;max-height:260px}
-  .layout.sidebar-collapsed .side{max-height:68px}
+  .side{
+    position:static;
+    max-height:min(70dvh,560px);
+    padding:12px;
+  }
+  .layout.sidebar-collapsed .side{max-height:68px;padding-block:11px}
+  .sidebar-topbar{min-height:44px;margin:0;padding-left:6px}
+  .layout.sidebar-collapsed .sidebar-heading{display:block}
+  .layout.sidebar-collapsed .sidebar-topbar{justify-content:space-between;padding-left:6px}
   .main{min-height:0;padding:13px}
   .main.table-mode{padding:0}
-  .toolbar{margin:0 0 14px;padding:0 0 14px}
+  .toolbar{margin:0 0 14px;padding:0 0 14px;gap:12px}
+  .title strong{font-size:21px}
+  .title span{font-size:12px;line-height:1.45}
+  .controls{width:100%;justify-content:space-between;gap:8px}
+  .view-switch{flex:1}
+  .view-switch button{flex:1;min-height:44px}
+  .flash-controls{width:100%;justify-content:space-between;gap:8px}
+  .flash-controls label{display:flex;align-items:center;gap:6px}
+  .flash-controls select,
+  .flash-controls .primary{min-height:44px}
   .table-mode .toolbar{margin:0 2px 14px;padding:4px 0 14px}
   .browse-wrap{max-height:none;overflow:visible}
   .words-table,
   .table-mode .words-table{min-width:0;table-layout:auto}
-  .card{min-height:345px;padding:46px 18px 28px}
+  .words-table tr{padding:12px}
+  .words-table td{
+    grid-template-columns:82px minmax(0,1fr);
+    gap:8px;
+    padding:7px 2px;
+    line-height:1.45;
+  }
+  .words-table td::before{font-size:9px;line-height:1.3}
+  .card{min-height:330px;padding:46px 16px 24px}
   .word{font-size:32px}
   .meaning{font-size:23px}
+  .example{font-size:16px;line-height:1.5;margin-top:22px;padding-top:16px}
+  .actions{gap:8px}
+  .actions button{min-height:48px}
   .due-empty{min-height:310px}
 }
 
@@ -1417,6 +1472,7 @@ const SIDEBAR_KEY = STORAGE_PREFIX + 'sidebar-collapsed';
 // Successful daily reviews move through these day intervals.
 // Stage 1 -> 1 day, Stage 2 -> 3 days, etc.
 const SRS_INTERVALS = [1,3,7,14,30,60,120];
+const isMobileViewport = () => window.matchMedia('(max-width: 760px), (max-width: 900px) and (max-height: 500px)').matches;
 
 let deck = null;
 let order = [];
@@ -1426,7 +1482,7 @@ let phase = 'initial';      // initial | review | complete
 let reviewRound = 0;
 let specialMode = null;     // null | favorites | due
 let specialRefs = [];
-let viewMode = 'table';
+let viewMode = isMobileViewport() ? 'flashcards' : 'table';
 
 const list = document.getElementById('list');
 const study = document.getElementById('study');
@@ -1938,6 +1994,18 @@ function setSidebarCollapsed(collapsed){
   sidebarToggle.title = collapsed ? 'Expand deck menu' : 'Collapse deck menu';
 }
 
+function focusStudyAreaOnMobile(){
+  if(!isMobileViewport()) return;
+  setSidebarCollapsed(true);
+  localStorage.setItem(SIDEBAR_KEY,'1');
+  window.requestAnimationFrame(()=>{
+    mainPanel.scrollIntoView({
+      behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      block:'start'
+    });
+  });
+}
+
 function renderList(){
   list.innerHTML = '';
 
@@ -1962,7 +2030,10 @@ function renderList(){
         <span>${esc(d.name)}</span>
         <span class="count">${p.known.length}/${d.count}${hasFav ? ' ★' : ''}</span>
       `;
-      b.onclick = ()=>selectDeck(d.id);
+      b.onclick = ()=>{
+        selectDeck(d.id);
+        focusStudyAreaOnMobile();
+      };
       list.appendChild(b);
     });
   }
@@ -1996,7 +2067,7 @@ function setView(mode){
 function selectDeck(id){
   specialMode = null;
   specialRefs = [];
-  viewMode = 'table';
+  viewMode = isMobileViewport() ? 'flashcards' : 'table';
 
   deck = DECKS.find(d=>d.id===id);
   if(!deck) return;
@@ -2543,6 +2614,7 @@ document.getElementById('reviewFavorites').onclick = ()=>{
 
   renderList();
   render();
+  focusStudyAreaOnMobile();
 };
 
 document.getElementById('reviewDue').onclick = ()=>{
@@ -2561,6 +2633,7 @@ document.getElementById('reviewDue').onclick = ()=>{
 
   renderList();
   render();
+  focusStudyAreaOnMobile();
 };
 
 document.addEventListener('keydown',e=>{
@@ -2593,7 +2666,7 @@ document.addEventListener('keydown',e=>{
 function boot(){
   const settings = getSettings();
   front.value = settings.front === 'en' ? 'en' : 'de';
-  setSidebarCollapsed(localStorage.getItem(SIDEBAR_KEY) === '1');
+  setSidebarCollapsed(isMobileViewport() || localStorage.getItem(SIDEBAR_KEY) === '1');
 
   renderList();
   updateSrsDashboard();
