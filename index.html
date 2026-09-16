@@ -78,6 +78,51 @@
       margin-bottom:18px;
     }
 
+    .header-actions{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .cloud-status{
+      min-height:38px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 11px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:var(--panel-2);
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .cloud-status::before{
+      content:"";
+      width:8px;
+      height:8px;
+      flex:0 0 auto;
+      border-radius:50%;
+      background:#88968c;
+    }
+
+    .cloud-status[data-state="synced"]::before{
+      background:var(--royal-light);
+      box-shadow:0 0 0 4px rgba(34,160,95,.12);
+    }
+
+    .cloud-status[data-state="syncing"]::before{
+      background:var(--gold);
+    }
+
+    .cloud-status[data-state="error"]::before{
+      background:var(--rust);
+    }
+
+    .cloud-auth[hidden]{display:none}
+
     .brand{
       display:flex;
       align-items:center;
@@ -502,7 +547,9 @@
 
     @media(max-width:760px){
       .app{padding:10px}
-      header{align-items:flex-start}
+      header{align-items:flex-start;flex-direction:column}
+      .header-actions{width:100%;justify-content:flex-start}
+      .cloud-status{flex:1;justify-content:center}
       .layout{grid-template-columns:1fr}
       .side{max-height:230px}
       .main{padding:13px}
@@ -1241,6 +1288,8 @@ h1{font-size:clamp(24px,2vw,30px)}
   .logo{width:42px;height:42px}
   .sub{display:none}
   #reset{min-width:auto;min-height:40px;padding-inline:12px}
+  .layout,
+  .layout.sidebar-collapsed{grid-template-columns:minmax(0,1fr)}
   .side{position:static;max-height:260px}
   .layout.sidebar-collapsed .side{max-height:68px}
   .main{min-height:0;padding:13px}
@@ -1248,7 +1297,8 @@ h1{font-size:clamp(24px,2vw,30px)}
   .toolbar{margin:0 0 14px;padding:0 0 14px}
   .table-mode .toolbar{margin:0 2px 14px;padding:4px 0 14px}
   .browse-wrap{max-height:none;overflow:visible}
-  .words-table{min-width:0;table-layout:auto}
+  .words-table,
+  .table-mode .words-table{min-width:0;table-layout:auto}
   .card{min-height:345px;padding:46px 18px 28px}
   .word{font-size:32px}
   .meaning{font-size:23px}
@@ -1276,10 +1326,15 @@ h1{font-size:clamp(24px,2vw,30px)}
       <div>
         <h1>German Flashcards</h1>
         <div class="sub">A focused desktop workspace for vocabulary and spaced repetition</div>
-        <div class="save-note"><span class="save-dot"></span>Progress is saved on this device</div>
+        <div class="save-note"><span class="save-dot"></span>Progress is always saved on this device</div>
       </div>
     </div>
-    <button id="reset">Reset deck</button>
+    <div class="header-actions">
+      <span id="cloudStatus" class="cloud-status" data-state="local" role="status" aria-live="polite">Local progress</span>
+      <button id="cloudLogin" class="cloud-auth" type="button">Sync with Google</button>
+      <button id="cloudLogout" class="cloud-auth" type="button" hidden>Sign out</button>
+      <button id="reset">Reset deck</button>
+    </div>
   </header>
 
   <div class="layout">
@@ -1350,6 +1405,7 @@ h1{font-size:clamp(24px,2vw,30px)}
 </div>
 
 <script src="data.js"></script>
+<script>window.GFC_DECKS = DECKS;</script>
 <script>
 
 const STORAGE_PREFIX = 'gfc:';
@@ -2555,5 +2611,6 @@ function boot(){
 boot();
 
 </script>
+<script type="module" src="cloud-sync.js"></script>
 </body>
 </html>

@@ -14,6 +14,7 @@ Included features:
 - Strict German-only browser TTS when a German voice is available
 - Favorites + Review Favorites
 - Local progress via localStorage
+- Optional Google sign-in with cloud progress sync through the existing Firebase project
 - Known / Again review flow
 - Per-word spaced repetition
 - Due Today screen across all decks
@@ -22,4 +23,7 @@ Included features:
 - Again does not reset SRS stage
 
 Deployment:
-Upload BOTH index.html and data.js to the root of the GitHub Pages repository.
+Upload index.html, data.js, cloud-sync.js, and cloud-sync-core.js to the root of the GitHub Pages repository.
+
+Cloud progress is stored separately from the main words-list levels at:
+artifacts/german-80-20-app/users/{uid}/progress/main
