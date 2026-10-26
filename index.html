@@ -1051,7 +1051,13 @@ h1{font-size:clamp(24px,2vw,30px)}
   scrollbar-color:#2d6b49 transparent;
 }
 
+
 .sidebar-topbar{
+  position:sticky;
+  top:0;
+  z-index:2;
+  background:#0d2116;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -1059,6 +1065,7 @@ h1{font-size:clamp(24px,2vw,30px)}
   margin-bottom:10px;
   padding:0 2px 0 8px;
 }
+
 
 .sidebar-heading{
   color:#d9e6dc;
